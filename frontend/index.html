@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Data Management</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+      color: #333333;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 15px;
+      border: 1px solid #dcdcdc;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: #007bff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #333;
+      font-weight: 500;
+      display: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      display: none;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f1f1;
+      color: #222222;
+      font-weight: 600;
+    }
+
+    td {
+      border-bottom: 1px solid #eeeeee;
+      color: #444444;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <form id="studentForm">
+      <div class="form-group">
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" required>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="class">Class:</label>
+        <input type="text" id="class" required>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" required>
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" id="country" required>
+      </div>
+
+      <div class="form-group">
+        <label for="state">State:</label>
+        <input type="text" id="state" required>
+      </div>
+
+      <button type="submit" class="btn">Save Student Data</button>
+    </form>
+
+    <div id="successMsg" class="message">Student Data Saved!</div>
+
+    <button type="button" id="viewBtn" class="btn">View all Students</button>
+
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Age</th>
+          <th>Country</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Paste your live API Gateway Endpoint URL here once deployed
+    const API_URL = "YOUR_API_GATEWAY_URL/students";
+
+    const studentForm = document.getElementById('studentForm');
+    const successMsg = document.getElementById('successMsg');
+    const viewBtn = document.getElementById('viewBtn');
+    const studentTable = document.getElementById('studentTable');
+    const tableBody = document.getElementById('tableBody');
+
+    studentForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const payload = {
+        studentId: document.getElementById('studentId').value,
+        name: document.getElementById('name').value,
+        class: document.getElementById('class').value,
+        age: document.getElementById('age').value,
+        country: document.getElementById('country').value,
+        state: document.getElementById('state').value
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          successMsg.style.display = 'block';
+          studentForm.reset();
+        }
+      } catch (err) {
+        console.error('Error saving data:', err);
+      }
+    });
+
+    viewBtn.addEventListener('click', async function() {
+      try {
+        const response = await fetch(API_URL);
+        const students = await response.json();
+
+        tableBody.innerHTML = '';
+        students.forEach(student => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${student.student_id}</td>
+            <td>${student.name}</td>
+            <td>${student.class}</td>
+            <td>${student.age}</td>
+            <td>${student.country || ''}</td>
+            <td>${student.state || ''}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+
+        studentTable.style.display = 'table';
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    });
+  </script>
+
+</body>
+</html>
