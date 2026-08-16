@@ -15,7 +15,7 @@ Automated Infrastructure: Infrastructure changes are automatically deployed and 
 
 <img width="1028" height="847" alt="image" src="https://github.com/user-attachments/assets/b4cdf80b-8bf1-4b5c-b101-ae076f2689af" />
 
-<img width="1185" height="645" alt="image" src="https://github.com/user-attachments/assets/9b98ff59-31c1-4129-921f-4e1068cbcdff" />
+
 
 
 
