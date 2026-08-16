@@ -74,7 +74,7 @@
       margin-top: 20px;
       margin-bottom: 20px;
       font-size: 16px;
-      color: #333;
+      color: #28a745;
       font-weight: 500;
       display: none;
     }
@@ -160,8 +160,8 @@
   </div>
 
   <script>
-    // Live AWS API Gateway Endpoint
-    const API_URL = "https://9oaw7z6k9h.execute-api.us-east-1.amazonaws.com/students";
+    // Updated AWS API Gateway Endpoint
+    const API_URL = "https://6qzv731rn4.execute-api.us-east-1.amazonaws.com/students";
 
     const studentForm = document.getElementById('studentForm');
     const successMsg = document.getElementById('successMsg');
@@ -191,9 +191,12 @@
         if (response.ok) {
           successMsg.style.display = 'block';
           studentForm.reset();
+        } else {
+          alert('Failed to save student data. Server status: ' + response.status);
         }
       } catch (err) {
         console.error('Error saving data:', err);
+        alert('Error connecting to backend API.');
       }
     });
 
@@ -206,10 +209,10 @@
         students.forEach(student => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${student.student_id}</td>
-            <td>${student.name}</td>
-            <td>${student.class}</td>
-            <td>${student.age}</td>
+            <td>${student.student_id || student.studentId || ''}</td>
+            <td>${student.name || ''}</td>
+            <td>${student.class || ''}</td>
+            <td>${student.age || ''}</td>
             <td>${student.country || ''}</td>
             <td>${student.state || ''}</td>
           `;
@@ -219,6 +222,7 @@
         studentTable.style.display = 'table';
       } catch (err) {
         console.error('Error fetching data:', err);
+        alert('Error retrieving student records.');
       }
     });
   </script>
