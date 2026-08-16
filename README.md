@@ -1,3 +1,5 @@
+Terraform-project6-serverless-api-lambda-dynamodb
+
 <img width="1185" height="645" alt="image" src="https://github.com/user-attachments/assets/419c94a4-8038-4bd1-80a8-ca72d166fb9c" /># Terraform-project6-serverless-api-lambda-dynamodb
 Student Management Web Application
 
